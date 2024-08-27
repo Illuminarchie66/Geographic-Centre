@@ -10,28 +10,67 @@
 </head>
 <body>
     <div id="map-container">
-        <div id="map"></div>
-        <div id="form-container">
-            <h2>Add Marker</h2>
-            <form id="marker-form">
-                <label for="latitude">Latitude:</label>
-                <input type="number" id="latitude" step="0.000001" required>
-                <br>
-                <label for="longitude">Longitude:</label>
-                <input type="number" id="longitude" step="0.000001" required>
-                <br>
-                <button type="submit">Add Marker</button>
-            </form>
+        <div id="map">
+            <button id="refresh-btn" onclick="refreshMarkers()">&#x21bb;</button>
         </div>
-        <div id="sum-container">
-            <h3>Sum of Coordinates:</h3>
-            <p id="lat-sum">Latitude Sum: 0</p>
-            <p id="lng-sum">Longitude Sum: 0</p>
+        
+        <div id="form-container">
+            <!-- Upper Section: Tabs and Marker Addition -->
+            <div id="form-upper">
+                <div class="tab">
+                    <button class="tablinks" onclick="openTab(event, 'LatLngTab')" id="defaultOpen">By Latitude/Longitude</button>
+                    <button class="tablinks" onclick="openTab(event, 'AddressTab')">By Address</button>
+                </div>
+                <!-- Tab content -->
+                <div id="LatLngTab" class="tabcontent">
+                    <form id="latlng-form">
+                        <label for="latitude">Latitude:</label>
+                        <input type="number" id="latitude" step="0.000001" required>
+                        <br>
+                        <label for="longitude">Longitude:</label>
+                        <input type="number" id="longitude" step="0.000001" required>
+                        <br>
+                        <button type="submit">Add Marker</button>
+                    </form>
+                </div>
+
+                <div id="AddressTab" class="tabcontent">
+                    <form id="address-form">
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" required>
+                        <br>
+                        <button type="submit">Geocode & Add Marker</button>
+                    </form>
+                </div>
+
+                <button id="calculate-btn" onclick="calculateCenter()">Calculate</button>
+            </div>
+
+            <!-- Lower Section: Results Display -->
+            <div id="form-lower">
+                <h3>Results:</h3>
+                <p id="result"> Display results here... </p>
+            </div>
         </div>
     </div>
 
+    <!-- Button for adding marker at the map center -->
+    <button id="add-marker-view-btn" onclick="addMarkerAtView()">Add Marker at Map Center</button>
+    
+    <script>
+        const eventSource = new EventSource('/stream_centre');
+    
+        eventSource.onmessage = function(event) {
+            console.log("Received C:", event.data);
+            // Optionally, display the data on the webpage
+            document.getElementById("output").innerHTML += `<p>${event.data}</p>`;
+        };
+    </script>
+
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Add Geocoding plugin -->
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     <script src="static/script.js"></script>
 </body>
 </html>
