@@ -1,0 +1,65 @@
+.settings-panel {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20vw;
+    background-color: #ffffff;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    z-index: 1001; /* Ensure the panel is above the map and button */
+}
+
+.settings-panel h3 {
+    margin-top: 0;
+}
+
+.settings-panel label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.settings-panel input[type="number"] {
+    width: 100%;
+    margin-top: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.settings-panel input[type="checkbox"] {
+    margin-left: 5px;
+}
+
+.settings-panel button {
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+}
+
+.settings-panel button:hover {
+    background-color: #0056b3;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

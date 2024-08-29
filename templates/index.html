@@ -4,14 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Earth Map</title>
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="static/styles/buttons.css">
+    <link rel="stylesheet" href="static/styles/forms.css">
+    <link rel="stylesheet" href="static/styles/map.css">
+    <link rel="stylesheet" href="static/styles/settings.css">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div id="map-container">
         <div id="map">
             <button id="refresh-btn" onclick="refreshMarkers()">&#x21bb;</button>
+            <img src="static/crosshair.png" class="crosshair" />
         </div>
         
         <div id="form-container">
@@ -56,21 +62,48 @@
 
     <!-- Button for adding marker at the map center -->
     <button id="add-marker-view-btn" onclick="addMarkerAtView()">Add Marker at Map Center</button>
-    
-    <script>
-        const eventSource = new EventSource('/stream_centre');
-    
-        eventSource.onmessage = function(event) {
-            console.log("Received C:", event.data);
-            // Optionally, display the data on the webpage
-            document.getElementById("output").innerHTML += `<p>${event.data}</p>`;
-        };
-    </script>
 
+        <!-- Add the settings button in the top right corner -->
+    <button id="settings-btn" onclick="toggleSettingsPanel()">
+        <i class="fas fa-cog" style="font-size: 24px;"></i>
+    </button>
+
+    <!-- Settings panel -->
+    <div id="settings-panel" class="settings-panel">
+        <span class="close-btn" onclick="toggleSettingsPanel()">&times;</span>
+        <h3>Settings</h3>
+        <label>
+            Experimental for all:
+            <input type="checkbox" id="experimental">
+        </label>
+        <label>
+            Balanced:
+            <input type="checkbox" id="balanced">
+        </label>
+        <label>
+            Alpha:
+            <input type="number" id="alpha" step="0.01" value="1">
+        </label>
+        <label>
+            Precision:
+            <input type="number" id="precision" min="2" value="10">
+        </label>
+        <label>
+            Track:
+            <input type="number" id="track" min="2" value="10">
+        </label>
+        <button onclick="saveSettings()">Save Settings</button>
+    </div>
+    
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <!-- Add Geocoding plugin -->
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-    <script src="static/script.js"></script>
+    <script src="{{ url_for('static', filename='scripts/map.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='scripts/server_interactions.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='scripts/markers.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='scripts/settings.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='scripts/forms.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='scripts/onload.js') }}" defer></script>
 </body>
 </html>

@@ -1,0 +1,27 @@
+/* Set the size of the map and form container */
+#map-container {
+    display: flex;
+    height: 100vh;
+    position: relative;
+}
+
+#map {
+    flex: 1;
+    position: relative;
+    z-index: 1; /* Ensure the map doesn't cover other elements */
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+.crosshair {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    transform: translateY(-50%) translateX(-50%);
+    z-index: 1000;
+    height: 20px;
+}

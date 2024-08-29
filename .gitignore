@@ -1,2 +1,13 @@
-.venv
+.venv/
 .env
+lipschitz.ipynb
+lipschwitz.py
+visualise.py
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ebignore
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

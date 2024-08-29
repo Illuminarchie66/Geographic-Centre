@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, jsonify, session
+from flask_socketio import SocketIO, emit, join_room
 from Centre_Calculator import Centre_Calculator
 from Point import Point
+import uuid
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
@@ -10,10 +12,11 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
+socketio = SocketIO(app)
 
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=6)  # Sessions expire after 30 minutes
 
-calc = Centre_Calculator()
+calc = Centre_Calculator(socketio)
 
 def retrieve_markers():
     """Retrieve markers from the session and convert them to Point objects."""
@@ -100,6 +103,7 @@ def update_marker():
 def refresh():
     # Clear markers from session
     session.pop('markers', None)
+    session.pop('iterations', None)
     
     # Reset current ID in session
     session['current_id'] = 0
@@ -107,22 +111,27 @@ def refresh():
 
     return jsonify({'status': 'success'}), 200
 
+@app.route('/clear', methods=['POST'])
+def clearIterations():
+    session.pop('iterations', None)
+    session.modified = True
+
+    return jsonify({'status': 'success'}), 200
 
 @app.route('/calculate_centre', methods=['POST'])
 def submit_coordinates():
+
+    settings = request.json['settings']
+
     # Retrieve markers from session
     markers = retrieve_markers()
     vertices = [m['vertex'] for m in markers]
     
     # Calculate the center
-    centre = calc.centre(vertices)
+    centre = calc.centre(vertices, 0, **settings)
     arcvariance = calc.arcvariance(centre, vertices)
 
     arcdistances = [{'distance': calc.arcdistance(centre, m['vertex']), 'id':m['id']} for m in markers]
-
-    print(centre)
-    print(arcdistances)
-    print(arcvariance)
     
     return jsonify({'vertex': centre.to_dict(), 'arcvariance': arcvariance, 'arcdistances': arcdistances})
 
