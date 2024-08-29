@@ -10,6 +10,8 @@ application = Flask(__name__)
 application.secret_key = get_secrets()['SECRET_KEY']
 socketio = SocketIO(application)
 
+from shared import session_sockets
+
 application.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=6)  # Sessions expire after 30 minutes
 
 calc = Centre_Calculator(socketio)
@@ -34,8 +36,6 @@ def set_id(current):
 @application.route('/')
 def index():
     return render_template('index.html')
-
-session_sockets = {}
 
 @socketio.on('connect')
 def handle_connect():

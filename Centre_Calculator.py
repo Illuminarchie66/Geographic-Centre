@@ -2,6 +2,8 @@ from Point import Point
 from flask import jsonify
 import numpy as np
 
+from shared import session_sockets
+
 R = 6371
 
 class Centre_Calculator:
@@ -215,6 +217,7 @@ class Centre_Calculator:
         
     def updateIterations(self, sid, iteration):
         # Emit the updated item to the client
+        socket_id = session_sockets.get(sid)
         self.socketio.emit('updated_iterations', 
                            {'iteration': {'latitude': iteration[0], 'longitude': iteration[1]}},
-                           room=sid)
+                           room=socket_id)
