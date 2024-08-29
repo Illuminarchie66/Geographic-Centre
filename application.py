@@ -5,13 +5,10 @@ from Point import Point
 from Secrets import get_secrets
 import os
 from datetime import timedelta
-import logging
 
 application = Flask(__name__)
 application.secret_key = get_secrets()['SECRET_KEY']
 socketio = SocketIO(application)
-
-logging.basicConfig(filename='/var/log/my_flask_app.log', level=logging.DEBUG)
 
 from shared import session_sockets
 
@@ -39,21 +36,6 @@ def set_id(current):
 @application.route('/')
 def index():
     return render_template('index.html')
-
-@socketio.on('connect')
-def handle_connect():
-    session_id = session.get('session_id')
-    if session_id:
-        session_sockets[session_id] = request.sid
-    else:
-        # Handle the case where there is no session ID (optional)
-        pass
-
-@socketio.on('disconnect')
-def handle_disconnect():
-    session_id = session.get('session_id')
-    if session_id in session_sockets:
-        del session_sockets[session_id]
 
 @application.route('/get-current-id', methods=['GET'])
 def get_current_id():
@@ -139,7 +121,6 @@ def submit_coordinates():
 
     settings = request.json['settings']
     session_id = request.json['session_id']
-    application.logger.info(session_id)
     # Retrieve markers from session
     markers = retrieve_markers()
     vertices = [m['vertex'] for m in markers]
