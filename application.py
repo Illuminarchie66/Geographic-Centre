@@ -35,6 +35,21 @@ def set_id(current):
 def index():
     return render_template('index.html')
 
+client_sessions = {}
+
+@socketio.on('connect')
+def handle_connect():
+    session_id = request.sid
+    client_sessions[session_id] = {'connected': True}  # You can store more data if needed
+    print(f"Client connected: {session_id}")
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    session_id = request.sid
+    if session_id in client_sessions:
+        del client_sessions[session_id]
+    print(f"Client disconnected: {session_id}")
+
 @application.route('/get-current-id', methods=['GET'])
 def get_current_id():
     if 'current_id' not in session:
@@ -118,13 +133,14 @@ def clearIterations():
 def submit_coordinates():
 
     settings = request.json['settings']
+    session_id = request.json['session_id']
 
     # Retrieve markers from session
     markers = retrieve_markers()
     vertices = [m['vertex'] for m in markers]
     
     # Calculate the center
-    centre = calc.centre(vertices, 0, **settings)
+    centre = calc.centre(vertices, session_id, **settings)
     arcvariance = calc.arcvariance(centre, vertices)
 
     arcdistances = [{'distance': calc.arcdistance(centre, m['vertex']), 'id':m['id']} for m in markers]

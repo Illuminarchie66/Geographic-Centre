@@ -216,4 +216,5 @@ class Centre_Calculator:
     def updateIterations(self, sid, iteration):
         # Emit the updated item to the client
         self.socketio.emit('updated_iterations', 
-                           {'iteration': {'latitude': iteration[0], 'longitude': iteration[1]}})
+                           {'iteration': {'latitude': iteration[0], 'longitude': iteration[1]}},
+                           room=sid)

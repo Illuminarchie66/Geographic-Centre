@@ -19,6 +19,7 @@ var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 // Listen for the 'list_updated' event from the server
 socket.on('updated_iterations', function(data) {
+    const sessionId = socket.id;
     console.log('Iteration recieved:', data.iteration);
     addIterationMarker(data.iteration.latitude, data.iteration.longitude);
 });
