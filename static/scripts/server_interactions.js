@@ -73,7 +73,7 @@ function calculateCenter() {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ settings: settings, session_id: sessionId }),
+        body: JSON.stringify({ settings: settings}),
     })
     .then(response => response.json())
     .then(data => {

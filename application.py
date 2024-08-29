@@ -35,20 +35,22 @@ def set_id(current):
 def index():
     return render_template('index.html')
 
-client_sessions = {}
+session_sockets = {}
 
 @socketio.on('connect')
 def handle_connect():
-    session_id = request.sid
-    client_sessions[session_id] = {'connected': True}  # You can store more data if needed
-    print(f"Client connected: {session_id}")
+    session_id = session.get('session_id')
+    if session_id:
+        session_sockets[session_id] = request.sid
+    else:
+        # Handle the case where there is no session ID (optional)
+        pass
 
 @socketio.on('disconnect')
 def handle_disconnect():
-    session_id = request.sid
-    if session_id in client_sessions:
-        del client_sessions[session_id]
-    print(f"Client disconnected: {session_id}")
+    session_id = session.get('session_id')
+    if session_id in session_sockets:
+        del session_sockets[session_id]
 
 @application.route('/get-current-id', methods=['GET'])
 def get_current_id():
