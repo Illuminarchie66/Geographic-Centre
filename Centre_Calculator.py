@@ -217,7 +217,6 @@ class Centre_Calculator:
         
     def updateIterations(self, sid, iteration):
         # Emit the updated item to the client
-        socket_id = session_sockets.get(sid)
         self.socketio.emit('updated_iterations', 
                            {'iteration': {'latitude': iteration[0], 'longitude': iteration[1]}},
-                           room=socket_id)
+                           room=sid)

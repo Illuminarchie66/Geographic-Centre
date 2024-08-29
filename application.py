@@ -5,10 +5,13 @@ from Point import Point
 from Secrets import get_secrets
 import os
 from datetime import timedelta
+import logging
 
 application = Flask(__name__)
 application.secret_key = get_secrets()['SECRET_KEY']
 socketio = SocketIO(application)
+
+logging.basicConfig(filename='/var/log/my_flask_app.log', level=logging.DEBUG)
 
 from shared import session_sockets
 
@@ -136,13 +139,13 @@ def submit_coordinates():
 
     settings = request.json['settings']
     session_id = request.json['session_id']
-    print(session_id)
+    application.logger.info(session_id)
     # Retrieve markers from session
     markers = retrieve_markers()
     vertices = [m['vertex'] for m in markers]
     
     # Calculate the center
-    centre = calc.centre(vertices, 0, **settings)
+    centre = calc.centre(vertices, session_id, **settings)
     arcvariance = calc.arcvariance(centre, vertices)
 
     arcdistances = [{'distance': calc.arcdistance(centre, m['vertex']), 'id':m['id']} for m in markers]

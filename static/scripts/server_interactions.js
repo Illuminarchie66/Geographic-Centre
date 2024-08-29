@@ -77,6 +77,7 @@ function calculateCenter() {
 
     socket.on('connect', function() {
         const sessionId = socket.id;
+        console.log(sessionId);
         fetch('/calculate_centre', {
             method: 'POST',
             headers: {
