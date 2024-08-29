@@ -2,19 +2,15 @@ from flask import Flask, render_template, request, jsonify, session
 from flask_socketio import SocketIO, emit, join_room
 from Centre_Calculator import Centre_Calculator
 from Point import Point
-import uuid
+from Secrets import get_secrets
 import os
-from dotenv import load_dotenv
 from datetime import timedelta
 
-# Load environment variables from .env file
-load_dotenv()
+application = Flask(__name__)
+application.secret_key = get_secrets()['SECRET_KEY']
+socketio = SocketIO(application)
 
-app = Flask(__name__)
-app.secret_key = os.getenv("SECRET_KEY")
-socketio = SocketIO(app)
-
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=6)  # Sessions expire after 30 minutes
+application.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=6)  # Sessions expire after 30 minutes
 
 calc = Centre_Calculator(socketio)
 
@@ -35,17 +31,17 @@ def set_id(current):
     session['current_id'] = current+1
     session.modified = True
 
-@app.route('/')
+@application.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/get-current-id', methods=['GET'])
+@application.route('/get-current-id', methods=['GET'])
 def get_current_id():
     if 'current_id' not in session:
         session['current_id'] = 0
     return jsonify({'id': session['current_id']}), 200
 
-@app.route('/get-markers', methods=['GET'])
+@application.route('/get-markers', methods=['GET'])
 def get_markers():
     if 'markers' not in session:
         session['markers'] = []
@@ -54,7 +50,7 @@ def get_markers():
         markers = retrieve_markers()
         return jsonify([{'latitude': point['vertex'].polar[0], 'longitude': point['vertex'].polar[1], 'id': point['id']} for point in markers])
 
-@app.route('/add-marker', methods=['POST'])
+@application.route('/add-marker', methods=['POST'])
 def add_marker():
     vertex = request.json
     point = Point.fromPolar([vertex['vertex']['latitude'], vertex['vertex']['longitude']])
@@ -72,7 +68,7 @@ def add_marker():
     #     print(m)
     return jsonify({'status': 'success'}), 200
 
-@app.route('/del-marker', methods=['POST'])
+@application.route('/del-marker', methods=['POST'])
 def del_marker():
     vertex = request.json
 
@@ -85,7 +81,7 @@ def del_marker():
     
     return jsonify({'status': 'success'}), 200
 
-@app.route('/update-marker', methods=['POST'])
+@application.route('/update-marker', methods=['POST'])
 def update_marker():
     vertex = request.json
     markers = retrieve_markers()
@@ -99,7 +95,7 @@ def update_marker():
             return jsonify({'status': 'success'}), 200
     return jsonify({'status': 'failed'}), 200
 
-@app.route('/refresh', methods=['POST'])
+@application.route('/refresh', methods=['POST'])
 def refresh():
     # Clear markers from session
     session.pop('markers', None)
@@ -111,14 +107,14 @@ def refresh():
 
     return jsonify({'status': 'success'}), 200
 
-@app.route('/clear', methods=['POST'])
+@application.route('/clear', methods=['POST'])
 def clearIterations():
     session.pop('iterations', None)
     session.modified = True
 
     return jsonify({'status': 'success'}), 200
 
-@app.route('/calculate_centre', methods=['POST'])
+@application.route('/calculate_centre', methods=['POST'])
 def submit_coordinates():
 
     settings = request.json['settings']
@@ -136,4 +132,4 @@ def submit_coordinates():
     return jsonify({'vertex': centre.to_dict(), 'arcvariance': arcvariance, 'arcdistances': arcdistances})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    application.run(debug=True)
