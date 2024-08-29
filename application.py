@@ -136,13 +136,13 @@ def submit_coordinates():
 
     settings = request.json['settings']
     session_id = request.json['session_id']
-
+    print(session_id)
     # Retrieve markers from session
     markers = retrieve_markers()
     vertices = [m['vertex'] for m in markers]
     
     # Calculate the center
-    centre = calc.centre(vertices, session_id, **settings)
+    centre = calc.centre(vertices, 0, **settings)
     arcvariance = calc.arcvariance(centre, vertices)
 
     arcdistances = [{'distance': calc.arcdistance(centre, m['vertex']), 'id':m['id']} for m in markers]

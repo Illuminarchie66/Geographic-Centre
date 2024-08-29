@@ -14,12 +14,4 @@ var iterations = [];
 // Geocoder for converting addresses to coordinates
 var geocoder = L.Control.Geocoder.nominatim();
 
-const socket = io.connect('http://' + document.domain + ':' + location.port, {
-    query: { session_id: sessionId } // Send session_id with connection
-});
-
-// Listen for the 'list_updated' event from the server
-socket.on('updated_iterations', function(data) {
-    console.log('Iteration recieved:', data.iteration);
-    addIterationMarker(data.iteration.latitude, data.iteration.longitude);
-});
+// Listen for the 'list_updated' event from the serve
