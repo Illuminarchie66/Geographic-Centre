@@ -68,47 +68,58 @@ function calculateCenter() {
 
     iterations.forEach(iteration => map.removeLayer(iteration));
     iterations = []
-    fetch('/calculate_centre', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ settings: settings }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Round the numbers to 8 decimal places
-        const latitude = data.vertex.polar.latitude.toFixed(8);
-        const longitude = data.vertex.polar.longitude.toFixed(8);
-        const variance = data.arcvariance.toFixed(4);
-    
-        // Format the result to display in the results section
-        console.log(data);
+
+    const socket = io.connect('http://' + document.domain + ':' + location.port)
+    socket.on('updated_iterations', function(data) {
+        console.log('Iteration recieved:', data.iteration);
+        addIterationMarker(data.iteration.latitude, data.iteration.longitude);
+    });
+
+    socket.on('connect', function() {
+        const sessionId = socket.id;
+        console.log(sessionId);
+        fetch('/calculate_centre', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ settings: settings, session_id: sessionId}),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Round the numbers to 8 decimal places
+            const latitude = data.vertex.polar.latitude.toFixed(8);
+            const longitude = data.vertex.polar.longitude.toFixed(8);
+            const variance = data.arcvariance.toFixed(4);
         
-        console.log(data.arcdistances);
-        // Create the result text including the list of distances
-        let distancesHtml = '';
-        let total = 0;
-        if (data.arcdistances && data.arcdistances.length > 0) {
-            distancesHtml = '<br><b>Distances:</b><ul>';
-            data.arcdistances.forEach(distance => {
-                distancesHtml += `<li>${distance.distance.toFixed(2)}km</li>`;
-                total += distance.distance;
-            });
-            distancesHtml += '</ul>';
-        }
-    
-        const resultText = `
-            <b>Latitude:</b> ${latitude} <br>
-            <b>Longitude:</b> ${longitude} <br>
-            <b>Total distance:</b> ${total.toFixed(4)}km <br>
-            <b>Variance:</b> ${variance} ${distancesHtml}
-        `;
-    
-        document.getElementById('result').innerHTML = resultText;
-        addCentreMarker(latitude, longitude);
-    })
-    .catch(error => console.error('Error calculating center:', error));
+            // Format the result to display in the results section
+            console.log(data);
+            
+            console.log(data.arcdistances);
+            // Create the result text including the list of distances
+            let distancesHtml = '';
+            let total = 0;
+            if (data.arcdistances && data.arcdistances.length > 0) {
+                distancesHtml = '<br><b>Distances:</b><ul>';
+                data.arcdistances.forEach(distance => {
+                    distancesHtml += `<li>${distance.distance.toFixed(2)}km</li>`;
+                    total += distance.distance;
+                });
+                distancesHtml += '</ul>';
+            }
+        
+            const resultText = `
+                <b>Latitude:</b> ${latitude} <br>
+                <b>Longitude:</b> ${longitude} <br>
+                <b>Total distance:</b> ${total.toFixed(4)}km <br>
+                <b>Variance:</b> ${variance} ${distancesHtml}
+            `;
+        
+            document.getElementById('result').innerHTML = resultText;
+            addCentreMarker(latitude, longitude);
+        })
+        .catch(error => console.error('Error calculating center:', error));
+    });
 }
 
 function clearIterations() {
