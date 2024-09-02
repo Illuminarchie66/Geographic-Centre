@@ -1,10 +1,7 @@
 import numpy as np
 import os
 import requests
-from Secrets import get_secrets
 
-# Access the API key
-# api_key = get_secrets()['API_KEY']
 # base_url = "https://maps.googleapis.com/maps/api/geocode/json"
 R = 6371
 
