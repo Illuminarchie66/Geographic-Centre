@@ -1,14 +1,14 @@
 import numpy as np
 import os
 import requests
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+# # Load environment variables from .env file
+# load_dotenv()
 
 # Access the API key
-api_key = os.getenv("API_KEY")
-base_url = "https://maps.googleapis.com/maps/api/geocode/json"
+# api_key = os.getenv("API_KEY")
+# base_url = "https://maps.googleapis.com/maps/api/geocode/json"
 R = 6371
 
 class Point:
@@ -31,61 +31,61 @@ class Point:
         y = R * np.cos(lat)*np.sin(lng)
         z = R * np.sin(lat)
 
-        endpoint = f"{base_url}?latlng={polar[0]}, {polar[1]}&key={api_key}"
-        r = requests.get(endpoint)
+        # endpoint = f"{base_url}?latlng={polar[0]}, {polar[1]}&key={api_key}"
+        # r = requests.get(endpoint)
         
-        if r.status_code==200:
-            json_data = r.json()
-            if "results" in json_data and len(json_data["results"]) > 0:
-                postcode = json_data['results'][0]['address_components']
-            else:
-                postcode = None
-        else:
-            postcode = None
+        # if r.status_code==200:
+        #     json_data = r.json()
+        #     if "results" in json_data and len(json_data["results"]) > 0:
+        #         postcode = json_data['results'][0]['address_components']
+        #     else:
+        #         postcode = None
+        # else:
+        #     postcode = None
 
-        return cls(cartesian=np.array([x, y, z]), polar=polar, postcode=postcode)
+        return cls(cartesian=np.array([x, y, z]), polar=polar, postcode=None)
 
     @classmethod
     def fromCartesian(cls, cartesian):
         lat = np.degrees(np.asin(cartesian[2] / R))
         lng = np.degrees(np.atan2(cartesian[1], cartesian[0]))
 
-        endpoint = f"{base_url}?latlng={lat}, {lng}&key={api_key}"
-        r = requests.get(endpoint)
-        if r.status_code==200:
-            json_data = r.json()
-            if "results" in json_data and len(json_data["results"]) > 0:
-                postcode = json_data['results'][0]['address_components']
-            else:
-                postcode = None
-        else:
-            postcode = None
+        # endpoint = f"{base_url}?latlng={lat}, {lng}&key={api_key}"
+        # r = requests.get(endpoint)
+        # if r.status_code==200:
+        #     json_data = r.json()
+        #     if "results" in json_data and len(json_data["results"]) > 0:
+        #         postcode = json_data['results'][0]['address_components']
+        #     else:
+        #         postcode = None
+        # else:
+        #     postcode = None
 
-        return cls(cartesian=np.array(cartesian), polar=[lat, lng], postcode=postcode)
+        return cls(cartesian=np.array(cartesian), polar=[lat, lng], postcode=None)
 
-    @classmethod
-    def fromAddress(cls, postcode):
+    # @classmethod
+    # def fromAddress(cls, postcode):
 
-        endpoint = f"{base_url}?address={postcode}&key={api_key}"
+    #     endpoint = f"{base_url}?address={postcode}&key={api_key}"
 
-        r = requests.get(endpoint)
-        if r.status_code == 200:
-            json_data = r.json()
-            if "results" in json_data and len(json_data["results"]) > 0:
-                postcode=json_data['results'][0]['address_components']
-                lat = json_data['results'][0]['geometry']['location']['lat']
-                lng = json_data['results'][0]['geometry']['location']['lng']
-                polar = [lat, lng]
+    #     r = requests.get(endpoint)
+    #     if r.status_code == 200:
+    #         json_data = r.json()
+    #         if "results" in json_data and len(json_data["results"]) > 0:
+    #             postcode=json_data['results'][0]['address_components']
+    #             lat = json_data['results'][0]['geometry']['location']['lat']
+    #             lng = json_data['results'][0]['geometry']['location']['lng']
+    #             polar = [lat, lng]
 
-                x = R * np.cos(np.radians(lat)) * np.cos(np.radians(lng))
-                y = R * np.cos(np.radians(lat)) * np.sin(np.radians(lng))
-                z = R * np.sin(np.radians(lat))
+    #             x = R * np.cos(np.radians(lat)) * np.cos(np.radians(lng))
+    #             y = R * np.cos(np.radians(lat)) * np.sin(np.radians(lng))
+    #             z = R * np.sin(np.radians(lat))
 
-                return cls(cartesian=np.array([x, y, z]), polar=polar, postcode=postcode)
-            else:
-                return False
-        else:
-            return False
+    #             return cls(cartesian=np.array([x, y, z]), polar=polar, postcode=postcode)
+    #         else:
+    #             return False
+    #     else:
+    #         return False
         
     def to_dict(self):
         return {
