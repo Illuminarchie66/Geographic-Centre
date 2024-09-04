@@ -43,6 +43,7 @@
     border-radius: 4px;
     cursor: pointer;
     margin-top: 10px;
+    margin-bottom: 10px;
     display: block;
     width: 100%;
 }
@@ -71,4 +72,45 @@
 
 #settings-btn svg {
     fill: #fff;
+}
+
+@media screen and (max-width: 999px) {
+    #add-marker-view-btn {
+        bottom: 10px;
+        left: 10px;
+        padding: 8px 12px;
+    }
+
+    #refresh-btn {
+        top: 10px;
+        right: 60px;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    #settings-btn {
+        top: 10px;
+        right: 10px; /* Adjust to make space for refresh button */
+        width: 35px;
+        height: 35px;
+    }
+
+    #calculate-btn {
+        width: 80%;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        position:absolute;
+        top: 85%; /* Adjust based on where you want the button to overlap */
+        left: 57.5%; /* Adjust based on where you want the button to overlap */
+        transform: translate(-50%, -50%); /* Centers the button */
+        z-index: 10; /* Ensures the button is on top of the form */
+    }
+
+    #add-marker-view-btn {
+        width: 35px;
+        height: 35px;
+        top: 95.75%; /* Adjust based on where you want the button to overlap */
+        left: 10%; /* Adjust based on where you want the button to overlap */
+        transform: translate(-50%, -50%);
+    }
 }

@@ -1,5 +1,5 @@
 window.onload = async function() {
-    document.getElementById("defaultOpen").click();
+    document.getElementById("left").click();
 
     current_id = await fetchCurrentId();
     temp = await fetchMarkers();
@@ -21,4 +21,13 @@ window.onload = async function() {
     document.getElementById('alpha').value = alpha;
     document.getElementById('precision').value = precision;
     document.getElementById('track').value = track;
+
+    var buttons = document.getElementsByClassName("add-marker");
+    Array.from(buttons).forEach(function(button) {
+        if (window.innerWidth <= 1000) {
+            button.textContent = "+";
+        } else {
+            button.textContent = "Add marker";
+        }
+    })
 };

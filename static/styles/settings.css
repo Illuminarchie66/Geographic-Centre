@@ -63,3 +63,11 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+@media screen and (max-width: 999px) {
+    .settings-panel {
+        width: 80vw;
+        max-width: 400px;
+        /* Center the panel more effectively on smaller screens */
+    }
+}

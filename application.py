@@ -5,9 +5,13 @@ from Point import Point
 from Secrets import get_secrets
 import os
 from datetime import timedelta
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 application = Flask(__name__)
-application.secret_key = get_secrets()['SECRET_KEY']
+application.secret_key = os.getenv('SECRET_KEY')
 socketio = SocketIO(application)
 
 from shared import session_sockets

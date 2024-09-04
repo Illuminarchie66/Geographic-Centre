@@ -25,3 +25,25 @@ body {
     z-index: 1000;
     height: 20px;
 }
+
+
+@media screen and (max-width: 999px) {
+    #map-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    #map {
+        flex: 1;
+        position: relative;
+    }
+
+    #form-container {
+        display: block;
+    }
+
+    .crosshair {
+        height: 16px;
+    }
+}
