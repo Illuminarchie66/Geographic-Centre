@@ -1,15 +1,12 @@
-from Point import Point
-from flask import jsonify
+from .Point import Point
+from flask import jsonify, current_app
 import numpy as np
 
-from shared import session_sockets
+from .shared import session_sockets
 
 R = 6371
 
 class Centre_Calculator:
-
-    def __init__(self, socketio):
-        self.socketio = socketio
 
     def centre(self, V, sid, experimental=False, alpha=1, precision=10, track=10, balanced=False, verbose=True):
         print("balanced: " + str(balanced))
@@ -136,6 +133,9 @@ class Centre_Calculator:
         return 2*alpha[0]*((1/n)*s1 - (1/np.square(n))*s2*s3) + alpha[1]*(10**-3)*s3
 
     def centreN(self, V, sid, alpha=1, precision=1e-10, track=10, balanced=False):
+
+        self.socketio = current_app.extensions['socketio']
+
         K = []
         n = len(V)
 

@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Earth Map</title>
-    <link rel="stylesheet" href="static/styles/buttons.css">
-    <link rel="stylesheet" href="static/styles/forms.css">
-    <link rel="stylesheet" href="static/styles/map.css">
-    <link rel="stylesheet" href="static/styles/settings.css">
+    
+    <link rel="stylesheet" href="{{ url_for('geographic_centre.static', filename='styles/buttons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('geographic_centre.static', filename='styles/forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('geographic_centre.static', filename='styles/map.css') }}">
+    <link rel="stylesheet" href="{{ url_for('geographic_centre.static', filename='styles/settings.css') }}">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
@@ -99,11 +100,11 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <!-- Add Geocoding plugin -->
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-    <script src="{{ url_for('static', filename='scripts/map.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='scripts/server_interactions.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='scripts/markers.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='scripts/settings.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='scripts/forms.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='scripts/onload.js') }}" defer></script>
+    <script src="{{ url_for('geographic_centre.static', filename='scripts/map.js') }}" defer></script>
+    <script src="{{ url_for('geographic_centre.static', filename='scripts/server_interactions.js') }}" defer></script>
+    <script src="{{ url_for('geographic_centre.static', filename='scripts/markers.js') }}" defer></script>
+    <script src="{{ url_for('geographic_centre.static', filename='scripts/settings.js') }}" defer></script>
+    <script src="{{ url_for('geographic_centre.static', filename='scripts/forms.js') }}" defer></script>
+    <script src="{{ url_for('geographic_centre.static', filename='scripts/onload.js') }}" defer></script>
 </body>
 </html>

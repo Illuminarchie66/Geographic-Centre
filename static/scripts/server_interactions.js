@@ -5,7 +5,8 @@ function markerToCoordinates(marker) {
 
 async function fetchCurrentId() {
     try {
-        const response = await fetch('/get-current-id');
+        const response = await fetch('/geographic-centre/get-current-id');
+        console.log(response);
         const data = await response.json();
         return data.id;
     } catch (error) {
@@ -16,7 +17,7 @@ async function fetchCurrentId() {
 
 async function fetchMarkers() {
     try {
-        const response = await fetch('/get-markers');
+        const response = await fetch('/geographic-centre/get-markers');
         const data = await response.json();
         return data;
     } catch (error) {
@@ -26,7 +27,7 @@ async function fetchMarkers() {
 }
 
 function addMarkerToServer(marker) {
-    fetch('/add-marker', {
+    fetch('/geographic-centre/add-marker', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -36,7 +37,7 @@ function addMarkerToServer(marker) {
 }
 
 function delMarkerToServer(markerId) {
-    fetch('/del-marker', {
+    fetch('/geographic-centre/del-marker', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -47,7 +48,7 @@ function delMarkerToServer(markerId) {
 
 function updateMarkerToServer(marker) {
     console.log(marker.options.id);
-    fetch('/update-marker', {
+    fetch('/geographic-centre/update-marker', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -68,7 +69,7 @@ function calculateCenter() {
 
     iterations.forEach(iteration => map.removeLayer(iteration));
     iterations = []
-
+    console.log('http://' + document.domain + ':' + location.port + "/geographic-centre/")
     const socket = io.connect('http://' + document.domain + ':' + location.port)
     socket.on('updated_iterations', function(data) {
         console.log('Iteration recieved:', data.iteration);
@@ -78,7 +79,7 @@ function calculateCenter() {
     socket.on('connect', function() {
         const sessionId = socket.id;
         console.log(sessionId);
-        fetch('/calculate_centre', {
+        fetch('/geographic-centre/calculate_centre', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -123,7 +124,7 @@ function calculateCenter() {
 }
 
 function clearIterations() {
-    fetch('/clear', { method: 'POST' })
+    fetch('/geographic-centre/clear', { method: 'POST' })
         .then(response => response.json())
         .then(data => {
             console.log('Server response:', data);

@@ -1,20 +1,14 @@
-from flask import Flask, render_template, request, jsonify, session
+from flask import Blueprint, render_template, request, jsonify, session
+from .Centre_Calculator import Centre_Calculator
 from flask_socketio import SocketIO, emit, join_room
-from Centre_Calculator import Centre_Calculator
-from Point import Point
-from Secrets import get_secrets
+from .Point import Point
 import os
 from datetime import timedelta
+from . import geographic_centre
 
-application = Flask(__name__)
-application.secret_key = get_secrets()['SECRET_KEY']
-socketio = SocketIO(application)
-
-from shared import session_sockets
-
-application.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=6)  # Sessions expire after 30 minutes
-
-calc = Centre_Calculator(socketio)
+# Create a Blueprint instance
+# socketio = SocketIO(geographic_centre)
+calc = Centre_Calculator()
 
 def retrieve_markers():
     """Retrieve markers from the session and convert them to Point objects."""
@@ -30,20 +24,20 @@ def save_markers(markers):
 def set_id(current):
     if 'current_id' not in session:
         session['current_id'] = 0
-    session['current_id'] = current+1
+    session['current_id'] = current + 1
     session.modified = True
 
-@application.route('/')
+@geographic_centre.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('geo.html')
 
-@application.route('/get-current-id', methods=['GET'])
+@geographic_centre.route('/get-current-id', methods=['GET'])
 def get_current_id():
     if 'current_id' not in session:
         session['current_id'] = 0
     return jsonify({'id': session['current_id']}), 200
 
-@application.route('/get-markers', methods=['GET'])
+@geographic_centre.route('/get-markers', methods=['GET'])
 def get_markers():
     if 'markers' not in session:
         session['markers'] = []
@@ -52,7 +46,7 @@ def get_markers():
         markers = retrieve_markers()
         return jsonify([{'latitude': point['vertex'].polar[0], 'longitude': point['vertex'].polar[1], 'id': point['id']} for point in markers])
 
-@application.route('/add-marker', methods=['POST'])
+@geographic_centre.route('/add-marker', methods=['POST'])
 def add_marker():
     vertex = request.json
     point = Point.fromPolar([vertex['vertex']['latitude'], vertex['vertex']['longitude']])
@@ -66,11 +60,9 @@ def add_marker():
     
     # Save updated markers back to session
     save_markers(markers)
-    # for m in markers:
-    #     print(m)
     return jsonify({'status': 'success'}), 200
 
-@application.route('/del-marker', methods=['POST'])
+@geographic_centre.route('/del-marker', methods=['POST'])
 def del_marker():
     vertex = request.json
 
@@ -78,12 +70,10 @@ def del_marker():
 
     markers = [point for point in markers if not (point['id'] == vertex['id'])]
     save_markers(markers)
-    # for m in markers:
-    #     print(str(m['vertex']))
     
     return jsonify({'status': 'success'}), 200
 
-@application.route('/update-marker', methods=['POST'])
+@geographic_centre.route('/update-marker', methods=['POST'])
 def update_marker():
     vertex = request.json
     markers = retrieve_markers()
@@ -92,12 +82,10 @@ def update_marker():
         if (point['id'] == vertex['id']):
             point['vertex'] = Point.fromPolar([vertex['vertex']['latitude'], vertex['vertex']['longitude']])
             save_markers(markers)
-            # for m in markers:
-            #     print(str(m['vertex']))
             return jsonify({'status': 'success'}), 200
     return jsonify({'status': 'failed'}), 200
 
-@application.route('/refresh', methods=['POST'])
+@geographic_centre.route('/refresh', methods=['POST'])
 def refresh():
     # Clear markers from session
     session.pop('markers', None)
@@ -109,16 +97,15 @@ def refresh():
 
     return jsonify({'status': 'success'}), 200
 
-@application.route('/clear', methods=['POST'])
+@geographic_centre.route('/clear', methods=['POST'])
 def clearIterations():
     session.pop('iterations', None)
     session.modified = True
 
     return jsonify({'status': 'success'}), 200
 
-@application.route('/calculate_centre', methods=['POST'])
+@geographic_centre.route('/calculate_centre', methods=['POST'])
 def submit_coordinates():
-
     settings = request.json['settings']
     session_id = request.json['session_id']
     # Retrieve markers from session
@@ -129,9 +116,6 @@ def submit_coordinates():
     centre = calc.centre(vertices, session_id, **settings)
     arcvariance = calc.arcvariance(centre, vertices)
 
-    arcdistances = [{'distance': calc.arcdistance(centre, m['vertex']), 'id':m['id']} for m in markers]
+    arcdistances = [{'distance': calc.arcdistance(centre, m['vertex']), 'id': m['id']} for m in markers]
     
     return jsonify({'vertex': centre.to_dict(), 'arcvariance': arcvariance, 'arcdistances': arcdistances})
-
-if __name__ == '__main__':
-    application.run(debug=True)

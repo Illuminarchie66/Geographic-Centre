@@ -92,7 +92,7 @@ function refreshMarkers() {
     clearIterations()
 
     // Send request to server to clear markers and reset ID
-    fetch('/refresh', { method: 'POST' })
+    fetch('/geographic-centre/refresh', { method: 'POST' })
         .then(response => response.json())
         .then(data => {
             console.log('Server response:', data);
