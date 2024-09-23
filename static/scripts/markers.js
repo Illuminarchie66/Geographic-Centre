@@ -121,25 +121,17 @@ function addIterationMarker(lat, lng) {
 }
 
 function updateButtonText() {
-    // Get the button element
     const buttons = document.getElementsByClassName('add-marker');
-    console.log(buttons);
-    
-    // Check the window's width
     if (window.innerWidth < 1000) {
         Array.from(buttons).forEach(button => {
             button.textContent = '+';
         })
-         // Change text to '+'
     } else {
         Array.from(buttons).forEach(function(button) {
             button.textContent = 'Add Marker';
-        }) // Change text back to 'Add Marker'
+        })
     }
 }
 
-// Call the function on page load
 updateButtonText();
-
-// Add event listener to call the function when the window is resized
 window.addEventListener('resize', updateButtonText);
