@@ -69,8 +69,8 @@ function calculateCenter() {
 
     iterations.forEach(iteration => map.removeLayer(iteration));
     iterations = []
-    console.log('http://' + document.domain + ':' + location.port + "/geographic-centre/")
-    const socket = io.connect('http://' + document.domain + ':' + location.port)
+    console.log('https://' + document.domain + ':' + location.port + "/geographic-centre/")
+    const socket = io.connect('https://' + document.domain + ':' + location.port)
     socket.on('updated_iterations', function(data) {
         console.log('Iteration recieved:', data.iteration);
         addIterationMarker(data.iteration.latitude, data.iteration.longitude);
