@@ -7,4 +7,4 @@ geographic_centre = Blueprint(
     static_folder='static',
     url_prefix='/geographic-centre')
 
-from . import routes  # Import routes
+from . import routes 
