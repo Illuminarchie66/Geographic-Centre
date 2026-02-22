@@ -71,6 +71,14 @@ class Point {
         this.polar = new Polar({latitude: latitude, longitude: longitude});
         this.cartesian = Point.polarToCartesian(this.polar);
     }
+
+    get degrees() {
+        return this.polar.degrees;
+    }
+
+    get radians() {
+        return this.polar.radians;
+    }
 }
 
 export {Polar, Point};

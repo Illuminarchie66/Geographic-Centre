@@ -2,7 +2,7 @@ const settings = {
     experimental: false,
     balanced: false,
     alpha: 1,
-    precision: 10,
+    precision: 1e-10,
     track: 10
 };
 
@@ -14,14 +14,12 @@ function initSettingsUI() {
     const precision = document.getElementById("precision");
     const track = document.getElementById("track");
 
-    // Initialize UI from settings
     experimental.checked = settings.experimental;
     balanced.checked = settings.balanced;
     alpha.value = settings.alpha;
     precision.value = settings.precision;
     track.value = settings.track;
 
-    // Live updates
     experimental.addEventListener("change", () => {
         settings.experimental = experimental.checked;
     });

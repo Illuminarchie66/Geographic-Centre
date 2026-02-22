@@ -1,24 +1,21 @@
 import {Point} from './point.js';
 import {geocoder} from './map.js';
-import {addMarker} from './markers.js'
+import {addBaseMarker} from './markers.js'
 
 document.getElementById('latlng-form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault();
 
-    // Get latitude and longitude from the form
     const lat = parseFloat(document.getElementById('latitude').value);
     const lng = parseFloat(document.getElementById('longitude').value);
 
-    // Validate input
     if (isNaN(lat) || isNaN(lng)) {
         alert('Please enter valid latitude and longitude.');
         return;
     }
 
-    addMarker(new Point({latitude: lat, longitude: lng}));
+    addBaseMarker(new Point({latitude: lat, longitude: lng}));
 });
 
-// Handle form submission to add a marker by address
 document.getElementById('address-form')
     .addEventListener('submit', async function(event) {
 
@@ -32,7 +29,7 @@ document.getElementById('address-form')
         if (results && results.length > 0) {
             const latLng = results[0].center;
 
-            addMarker(
+            addBaseMarker(
                 new Point({
                     latitude: latLng.lat,
                     longitude: latLng.lng
@@ -47,4 +44,37 @@ document.getElementById('address-form')
         console.error(err);
         alert('Geocoding failed.');
     }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const tabLinks = document.querySelectorAll(".tablinks");
+    const tabContents = document.querySelectorAll(".tabcontent");
+
+    function openTab(tabName, clickedButton) {
+
+        tabContents.forEach(tab => {
+            tab.style.display = "none";
+        });
+
+        tabLinks.forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        document.getElementById(tabName).style.display = "block";
+        clickedButton.classList.add("active");
+    }
+
+    tabLinks.forEach(button => {
+        if (button.dataset.tab == 'InfoTab') {
+            openTab('InfoTab', button);
+        }
+
+        button.addEventListener("click", function () {
+            const tabName = this.dataset.tab;
+            openTab(tabName, this);
+        });
+    });
+
+
 });
