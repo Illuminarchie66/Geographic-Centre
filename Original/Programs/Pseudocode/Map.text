@@ -1,0 +1,52 @@
+class Map:
+
+    public pointlist = []
+
+    public pointlistAdd(point)
+
+        pointlist.append(point)
+
+        pass
+
+    public centre2(point1, point2)
+
+        lat1 = radians(point1[0])
+        lng1 = radians(point1[1])
+        lat2 = radians(point2[0])
+        lng2 = radians(point2[1])
+
+        Bx = cos(lat2)*cos(lng2-lng1)   
+        By = cos(lat2)*sin(lng2-lng1)   
+
+        midlat = atan2( sin(lat1) + sin(lat2), sqrt((cos(lat1) + Bx)**2 +By**2))   
+        midlng = lng1 + atan2(By, cos(lat1) + Bx)
+
+        midpoint = Point.fromPolar([midlat, midlng])
+
+        return midpoint
+
+    public centre3(point1, point2, point3)
+
+        perp1 = createPerpendicular(point1, point2) #perp1 as in perpendicular1
+        perp2 = createPerpendicular(point1, point3) #perp2 as in perpendicular2
+
+        y_coeffecient = (perp1[2]*perp2[0] - perp1[0]*perp2[2]) / (perp1[2]*perp2[1] - perp[1]*perp2[2])
+        z_coeffecient = (perp1[1]*perp2[0] - perp1[0]*perp2[1]) / (perp1[1]*perp2[2] - perp[2]*perp2[1])
+
+        t_coeffecient = 1 + y_coeffecient**2 + z_coeffecient**2
+        t = sqrt(R**2 * (1/t_coeffecient))
+
+        midpoint = Point.fromCartesian([t, t*y, t*z])
+
+        return midpoint
+        
+    public createPerpendicular(point1, point2)
+
+        plane = cross(point1, point2)
+        centre = centre2(point1, point2)
+
+        perpendicular = cross(plane, centre)
+
+        return centre
+        
+    
