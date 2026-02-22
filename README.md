@@ -22,7 +22,7 @@ This involved a deep exploration into mathematics and optimisation. The original
 ## Problem Breakdown
 The original problem of finding a location of equal distance to travel to in our world was too defined and bounded by the complexities of real world travel. Thus, we abstracted away the information to reduce it to a more mathematical formulation. Given $n$ points ($\text{s.t.} n > 0$), we shall call vertices $\{\mathbf{v}_1, \mathbf{v}_2, \ldots \mathbf{v}_n\}$, in some space $S$, we want to find $\mathbf{c} \in S$, such that distance $\ell: S^2 \rightarrow \mathbb{R}$ between $\mathbf{v}_i$ and $\mathbf{c} = k \in \mathbb{R} \forall i$. When we refer to a space, we mean some way that the vertices can be traversed to one and other; for our purposes we look at three spaces: a graph $G=(V,E)$, continuous Euclidean $\mathbb{R}^n$ and polar $(r, \phi, \theta)$. <br> <br>
 
-In our definition of what we are aiming for, it assumes that there is some singular distance $k$ that exists which is equal for all vertices to the centre. However, there isn't always a guarantee of this. Hence, we refraim this as a minimisation problem. Since the goal is to achieve equidistance, an equivalent idea is to have the distances be as similar as possible. Let us have the set of distances $k_1, k_2, \ldots k_n$ where $k_i = \ell(\mathbf{v}\_i, \mathbf{c} )$ , ideally we want $k_1 = k_2 = \dots = k_n$ however in cases where this is not possible, we want them to be a close together as possible. There are a few possible metrics we could use for this, but the most apt is variance. 
+In our definition of what we are aiming for, it assumes that there is some singular distance $k$ that exists which is equal for all vertices to the centre. However, there isn't always a guarantee of this. Hence, we refraim this as a minimisation problem. Since the goal is to achieve equidistance, an equivalent idea is to have the distances be as similar as possible. Let us have the set of distances $k_1, k_2, \ldots k_n$ where $k_i = \ell(\mathbf{v}_i, \mathbf{c} )$ , ideally we want $k_1 = k_2 = \dots = k_n$ however in cases where this is not possible, we want them to be a close together as possible. There are a few possible metrics we could use for this, but the most apt is variance. 
 
 $$\sigma = \frac{\sum_{i=0}^{n} (k_i - \mu)^2}{n} = \frac{\sum_{i=0}^{n} k_i^2}{n} - \left(\frac{\sum_{i=0}^n k_i}{n}\right)^2$$
 
@@ -49,21 +49,21 @@ We can generalise this a bit further when considering a circle equation. For 2D,
 
 $$
 \begin{aligned} 
-& (x-p)^2 + (y-q)^2 = r^2 \\\\
-\Rightarrow & - 2px - 2qy + (p^2 + q^2 - r^2) + x^2 + y^2 = 0  \\\\
-\Rightarrow & Ax_i + By_i + C + x_i^2 + y_i^2 \approx 0 \forall i\\\\
-\Rightarrow & \min_{A,B,C} \sum_i \left( Ax_i + By_i + C + x_i^2 + y_i^2 \right)^2 \\\\
-\Rightarrow & \frac{\partial f}{\partial A} = \sum_i 2x_i \left( Ax_i + By_i + C + x_i^2 + y_i^2 \right) = 0,\\\\
-& \frac{\partial f}{\partial B} = \sum_i 2y_i \left( Ax_i + By_i + C + x_i^2 + y_i^2 \right) = 0,\\\\
-& \frac{\partial f}{\partial C} = \sum_i \left( Ax_i + By_i + C + x_i^2 + y_i^2 \right) = 0, \\\\
+& (x-p)^2 + (y-q)^2 = r^2 \\
+\Rightarrow & - 2px - 2qy + (p^2 + q^2 - r^2) + x^2 + y^2 = 0  \\
+\Rightarrow & Ax_i + By_i + C + x_i^2 + y_i^2 \approx 0 \forall i\\
+\Rightarrow & \min_{A,B,C} \sum_i \left( Ax_i + By_i + C + x_i^2 + y_i^2 \right)^2 \\
+\Rightarrow & \frac{\partial f}{\partial A} = \sum_i 2x_i \left( Ax_i + By_i + C + x_i^2 + y_i^2 \right) = 0,\\
+& \frac{\partial f}{\partial B} = \sum_i 2y_i \left( Ax_i + By_i + C + x_i^2 + y_i^2 \right) = 0,\\
+& \frac{\partial f}{\partial C} = \sum_i \left( Ax_i + By_i + C + x_i^2 + y_i^2 \right) = 0, \\
 \Rightarrow & \begin{bmatrix}
-\sum x_i^2 & \sum x_i y_i & \sum x_i \\\\
-\sum x_i y_i & \sum y_i^2 & \sum y_i \\\\
+\sum x_i^2 & \sum x_i y_i & \sum x_i \\
+\sum x_i y_i & \sum y_i^2 & \sum y_i \\
 \sum x_i & \sum y_i & n 
 \end{bmatrix} \begin{bmatrix}
-A \\\\ B \\\\ C
+A \\ B \\ C
 \end{bmatrix} = - \begin{bmatrix}
-\sum x_i (x_i^2 + y_i^2) \\\\ \sum y_i (x_i^2 + y_i^2)  \\\\ \sum (x_i^2 + y_i^2)
+\sum x_i (x_i^2 + y_i^2) \\ \sum y_i (x_i^2 + y_i^2)  \\ \sum (x_i^2 + y_i^2)
 \end{bmatrix}
 \end{aligned}
 $$
@@ -99,10 +99,10 @@ In this space, we can convert between polar and cartesian coordinates with:
 
 $$
 \begin{aligned} 
-\text{Polar to Cartesian:} \\\\
+\text{Polar to Cartesian:} \\
 x = R \cos \varphi \cos \lambda 
 & \quad y = R \cos \varphi \sin \lambda 
-& z = R \sin \varphi \\\\
+& z = R \sin \varphi \\
 \end{aligned}
 $$
 
@@ -110,7 +110,7 @@ and
 
 $$
 \begin{aligned} 
-\text{Cartesian to Polar:} \\\\ 
+\text{Cartesian to Polar:} \\ 
 R = \sqrt{x^2 + y^2 + z^2} 
 & \quad \theta = \arccos \frac{z}{R} 
 & \phi = \text{atan2}(y,x) 
@@ -132,8 +132,8 @@ Or we can find the angle with their vectors $\mathbf{p_1}, \mathbf{p_2}$:
 
 $$
 \begin{aligned}
-\Delta \sigma &= \arccos(\mathbf{v}_1 \cdot \mathbf{v}_2) \\\\
-&=  \arcsin|\mathbf{v}_1 \times \mathbf{v}_2| \\\\
+\Delta \sigma &= \arccos(\mathbf{v}_1 \cdot \mathbf{v}_2) \\
+&=  \arcsin|\mathbf{v}_1 \times \mathbf{v}_2| \\
 &= \arctan\left( \frac{|\mathbf{v}_1 \times \mathbf{v}_2|}{\mathbf{v}_1 \cdot \mathbf{v}_2} \right)
 \end{aligned}
 $$
@@ -142,40 +142,40 @@ We then multiply the angle by $R$ to get the arcdistance. With our distance defi
 
 $$
 \begin{aligned}
-B_x &= \cos \varphi_2 \cos |\lambda_1 - \lambda_2| \\\\
-B_y &= \cos \varphi_2 \sin |\lambda_1 - \lambda_2| \\\\
+B_x &= \cos \varphi_2 \cos |\lambda_1 - \lambda_2| \\
+B_y &= \cos \varphi_2 \sin |\lambda_1 - \lambda_2| \\
 \varphi_m &= \text{atan2}\left( 
   \sin \varphi_1 + \sin \varphi_2, 
-  \sqrt{\left( \cos \varphi_1 + B_x \right)^2 + B_y^2} \right) \\\\
+  \sqrt{\left( \cos \varphi_1 + B_x \right)^2 + B_y^2} \right) \\
 \lambda_m &= \lambda_1 + \text{atan2}\left( B_y, \cos \varphi_1 + B_x\right)
 \end{aligned}
 $$
 
 For $n=3$, this introduced a new challenge. Considering the complexity of the above formula, I was concerned that it would sprial into a confusing mess of algebra, however thats where I shifted my approach to think similar to how we solved this in 2D Euclidean. There, we took the perpendicular bisectors of the triangle, and looked at where they met. We can apply a similar logic. We construct a triangular prism by defining planes between our vertices $\mathbf{v}_1, \mathbf{v}_2, \mathbf{v}_3 $. By choosing two sides of the prism, we can find the perpendicular planar bisectors between them. Where those planes meet will be a line that passes through the sphere, and where that line crosses the sphere is the point of equidistance. 
 
-We make a plane $P_{1,2}$ between $\mathbf{v}_1$ and $\mathbf{v}_2$ with $(\mathbf{v}_1 \times \mathbf{v}_2) \cdot \mathbf{x} = 0$. We can then find a perpendicular plane at its centre by taking the cross product of the plane with a vector on the centre line, which is just $\frac{1}{2}(\mathbf{v}_1 + \mathbf{v}_2)$, hence we can make the two perpendicular planes $P\_{1,2}^{\perp}$ and $P\_{1,3}^{\perp}$ with:
+We make a plane $P_{1,2}$ between $\mathbf{v}_1$ and $\mathbf{v}_2$ with $(\mathbf{v}_1 \times \mathbf{v}_2) \cdot \mathbf{x} = 0$. We can then find a perpendicular plane at its centre by taking the cross product of the plane with a vector on the centre line, which is just $\frac{1}{2}(\mathbf{v}_1 + \mathbf{v}_2)$, hence we can make the two perpendicular planes $P_{1,2}^{\perp}$ and $P_{1,3}^{\perp}$ with:
 
 $$
 \begin{aligned}
-P_{i,j}^{\perp}&: \left( (\mathbf{v}_i \times \mathbf{v}_j) \times \frac{1}{2}(\mathbf{v}_i + \mathbf{v}_j) \right) \cdot \mathbf{x} = 0 \\\\
-&: \mathbf{d}\_{i,j} \mathbf{x}= 0 \\\\
-&: a\_{i,j}x + b\_{i,j}y + c\_{i,j}z = 0
+P_{i,j}^{\perp}&: \left( (\mathbf{v}_i \times \mathbf{v}_j) \times \frac{1}{2}(\mathbf{v}_i + \mathbf{v}_j) \right) \cdot \mathbf{x} = 0 \\
+&: \mathbf{d}_{i,j} \mathbf{x}= 0 \\
+&: a_{i,j}x + b_{i,j}y + c_{i,j}z = 0
 \end{aligned}
 $$
 
-With two planes, we need to find the line where they intersect. Since it passes through the origin, we can simply parameterize a vector by $t$; so $x=t, y=ty\_c, z=tz\_c$, letting our directional vector be $(1, y\_c, z\_c)$. Plugging this into our line equations we get:
+With two planes, we need to find the line where they intersect. Since it passes through the origin, we can simply parameterize a vector by $t$; so $x=t, y=ty_c, z=tz_c$, letting our directional vector be $(1, y_c, z_c)$. Plugging this into our line equations we get:
 
 $$
-a\_{1,2} + b\_{1,2}y\_c + c\_{1,2}z\_c = 0 \\\\
-a\_{1,3} + b\_{1,3}y\_c + c\_{1,3}z\_c = 0 
+a_{1,2} + b_{1,2}y_c + c_{1,2}z_c = 0 \\
+a_{1,3} + b_{1,3}y_c + c_{1,3}z_c = 0 
 $$
 
 This is a linear system of equations, where we can solve for $y_c$ and $z_c$ with:
 
 $$
 \begin{aligned}
-y\_c &= - \left( (a\_{1,2} c\_{1,3} - a\_{1,3} c\_{1,2}) / (b\_{1,2} c\_{1,3} - b\_{1,3} c\_{1,2}) \right) \\\\
-z\_c &= - \left( (a\_{1,2} b\_{1,3} - a\_{1,3} b\_{1,2}) / (b\_{1,2} c\_{1,3} - b\_{1,3} c\_{1,2}) \right)
+y_c &= - \left( (a_{1,2} c_{1,3} - a_{1,3} c_{1,2}) / (b_{1,2} c_{1,3} - b_{1,3} c_{1,2}) \right) \\
+z_c &= - \left( (a_{1,2} b_{1,3} - a_{1,3} b_{1,2}) / (b_{1,2} c_{1,3} - b_{1,3} c_{1,2}) \right)
 \end{aligned}
 $$
 
@@ -183,20 +183,20 @@ This defines our line of intersection, and we can use it to calculate where it i
 
 $$
 \begin{aligned}
-t_c &= 1 + y\_c^2 + z\_c^2 \\\\
+t_c &= 1 + y_c^2 + z_c^2 \\
 t &= \frac{R}{\sqrt{t_c}}
 \end{aligned}
 $$
 Thus our midpoint on the surface is 
 
 $$
-\mathbf{c} = \left[ t, ty\_c, tz\_c\right]^{T}
+\mathbf{c} = \left[ t, ty_c, tz_c\right]^{T}
 $$
 
 Which we can convert back into latitude and longitude if we so desire. This method works for 3 points, and shows how working in the cartesian world is powerful when polar coordinates become too difficult. Now for $n > 3$ we have a similar problem to Euclidean space, where there is no guarantee of a point of equidistance. Hence, we have to find a point that minimises the variance of distances. Using our distance formulas from earlier, we consider some hypothetical centre $\mathbf{c}$ and list of vertices $\mathbf{v}_1, \mathbf{v}_2, \ldots \mathbf{v}_n$, and we want to minimise the variance of the distances between them. We could work in polar coordinates, however the distance equation is large, complex and poorly defined for certain values, so we instead look at the arcdistance equations with our vectors. We get the following: 
 
 $$
-\sigma^2(\mathbf{c}) = \frac{1}{n}\sum_{i=1}^{n} \arctan\left(\frac{|\mathbf{v}\_i \times \mathbf{c}|}{\mathbf{v}\_i \cdot \mathbf{c}}\right)^2 - \frac{1}{n^2}\left(\sum_{i=1}^n \arctan\frac{|\mathbf{v}\_i \times \mathbf{c}|}{\mathbf{v}\_i \cdot \mathbf{c}} \right)^2
+\sigma^2(\mathbf{c}) = \frac{1}{n}\sum_{i=1}^{n} \arctan\left(\frac{|\mathbf{v}_i \times \mathbf{c}|}{\mathbf{v}_i \cdot \mathbf{c}}\right)^2 - \frac{1}{n^2}\left(\sum_{i=1}^n \arctan\frac{|\mathbf{v}_i \times \mathbf{c}|}{\mathbf{v}_i \cdot \mathbf{c}} \right)^2
 $$
 
 We use $\arctan$ because there are no invalid values. $\arccos$ and $\arcsin$ fail outside of $[-1,1]$, so $\arctan$ gives us additional stability when solving this problem. We need to minimize variance $\sigma^2$, which we can do with stochastic gradient descent:
@@ -207,8 +207,8 @@ Thus we need to take the derivative of that monster of an equation. So, let me b
 
 $$
 \begin{aligned}
-\ell &= \arctan(u) & u &= v/w \\\\
-v &= |\mathbf{v}\_i \times \mathbf{c}| & w &= \mathbf{v}\_i \cdot \mathbf{c}
+\ell &= \arctan(u) & u &= v/w \\
+v &= |\mathbf{v}_i \times \mathbf{c}| & w &= \mathbf{v}_i \cdot \mathbf{c}
 \end{aligned}
 $$
 
@@ -216,22 +216,22 @@ With our pieces, we proceed to take their derivatives with respect to $\mathbf{c
 
 $$
 \begin{aligned}
-\frac{\partial w}{\partial \mathbf{c}} &= \mathbf{v}\_i \\\\
-\frac{\partial v}{\partial \mathbf{c}} &= \frac{1}{\left| \mathbf{v}\_i \times \mathbf{c} \right|} \begin{bmatrix}
-y\_i^2 + z\_i^2 & -x\_i y\_i & -x\_i z\_i \\\\
--x\_i y\_i & x\_i^2 + z\_i^2 & -y\_i z\_i \\\\
--x\_i z\_i & -y\_i z\_i & x\_i^2 + y\_i^2 
-\end{bmatrix} \mathbf{c} = \frac{1}{\left| \mathbf{v}\_i \times \mathbf{c} \right|} K\_i \mathbf{c} \\\\
-\Rightarrow \frac{\partial u}{\partial \mathbf{c}} &= \frac{1}{(\mathbf{v}\_i \cdot \mathbf{c})^2} 
-\left[ \frac{\mathbf{v}\_i \cdot \mathbf{c}}{| \mathbf{v}\_i \times \mathbf{c} |} K\_i \mathbf{c} - \mathbf{v}\_i | \mathbf{v}\_i \times \mathbf{c} | \right] \\\\
-\Rightarrow \frac{\partial \ell}{\partial \mathbf{c}} &= \frac{\partial u}{\partial \mathbf{c}} \cdot \left( \frac{1}{1+\left(\frac{|\mathbf{v}\_i \times \mathbf{c}|}{\mathbf{v}\_i \cdot \mathbf{c}}\right)^2} \right)
-= \frac{\partial u}{\partial \mathbf{c}} \cdot \left( \frac{(\mathbf{v}\_i \cdot \mathbf{c})^2}{(\mathbf{v}\_i \cdot \mathbf{c})^2 + |\mathbf{v}\_i \times \mathbf{c}|^2} \right) \\\\
-&= \frac{1}{(\mathbf{v}\_i \cdot \mathbf{c})^2 + |\mathbf{v}\_i \times \mathbf{c}|^2} \left[ \frac{\mathbf{v}\_i \cdot \mathbf{c}}{| \mathbf{v}\_i \times \mathbf{c} |} K\_i \mathbf{c} - \mathbf{v}\_i | \mathbf{v}\_i \times \mathbf{c} | \right] \\\\
-&= \frac{1}{|\mathbf{v}\_i|^2|\mathbf{c}|^2} \left[ \frac{\mathbf{v}\_i \cdot \mathbf{c}}{| \mathbf{v}\_i \times \mathbf{c} |} K\_i \mathbf{c} - \mathbf{v}\_i | \mathbf{v}\_i \times \mathbf{c} | \right] \\\\
+\frac{\partial w}{\partial \mathbf{c}} &= \mathbf{v}_i \\
+\frac{\partial v}{\partial \mathbf{c}} &= \frac{1}{\left| \mathbf{v}_i \times \mathbf{c} \right|} \begin{bmatrix}
+y_i^2 + z_i^2 & -x_i y_i & -x_i z_i \\
+-x_i y_i & x_i^2 + z_i^2 & -y_i z_i \\
+-x_i z_i & -y_i z_i & x_i^2 + y_i^2 
+\end{bmatrix} \mathbf{c} = \frac{1}{\left| \mathbf{v}_i \times \mathbf{c} \right|} K_i \mathbf{c} \\
+\Rightarrow \frac{\partial u}{\partial \mathbf{c}} &= \frac{1}{(\mathbf{v}_i \cdot \mathbf{c})^2} 
+\left[ \frac{\mathbf{v}_i \cdot \mathbf{c}}{| \mathbf{v}_i \times \mathbf{c} |} K_i \mathbf{c} - \mathbf{v}_i | \mathbf{v}_i \times \mathbf{c} | \right] \\
+\Rightarrow \frac{\partial \ell}{\partial \mathbf{c}} &= \frac{\partial u}{\partial \mathbf{c}} \cdot \left( \frac{1}{1+\left(\frac{|\mathbf{v}_i \times \mathbf{c}|}{\mathbf{v}_i \cdot \mathbf{c}}\right)^2} \right)
+= \frac{\partial u}{\partial \mathbf{c}} \cdot \left( \frac{(\mathbf{v}_i \cdot \mathbf{c})^2}{(\mathbf{v}_i \cdot \mathbf{c})^2 + |\mathbf{v}_i \times \mathbf{c}|^2} \right) \\
+&= \frac{1}{(\mathbf{v}_i \cdot \mathbf{c})^2 + |\mathbf{v}_i \times \mathbf{c}|^2} \left[ \frac{\mathbf{v}_i \cdot \mathbf{c}}{| \mathbf{v}_i \times \mathbf{c} |} K_i \mathbf{c} - \mathbf{v}_i | \mathbf{v}_i \times \mathbf{c} | \right] \\
+&= \frac{1}{|\mathbf{v}_i|^2|\mathbf{c}|^2} \left[ \frac{\mathbf{v}_i \cdot \mathbf{c}}{| \mathbf{v}_i \times \mathbf{c} |} K_i \mathbf{c} - \mathbf{v}_i | \mathbf{v}_i \times \mathbf{c} | \right] \\
 \Rightarrow \frac{\partial \\\sigma^2}{\partial \mathbf{c}} &= 
-\frac{2}{n}\sum\_{i=1}^n \frac{\partial \ell}{\partial \mathbf{c}} \arctan\left(\frac{|\mathbf{v}\_i \times \mathbf{c}|}{\mathbf{v}\_i \cdot \mathbf{c}}\right) - 
-\frac{2}{n^2}\left(\sum\_{i=0}^n \frac{\partial \ell}{\partial \mathbf{c}} \right) 
-\left( \sum\_{i=0}^n \arctan\left(\frac{|\mathbf{v}\_i \times \mathbf{c}|}{\mathbf{v}\_i \cdot \mathbf{c}}\right)\right)
+\frac{2}{n}\sum_{i=1}^n \frac{\partial \ell}{\partial \mathbf{c}} \arctan\left(\frac{|\mathbf{v}_i \times \mathbf{c}|}{\mathbf{v}_i \cdot \mathbf{c}}\right) - 
+\frac{2}{n^2}\left(\sum_{i=0}^n \frac{\partial \ell}{\partial \mathbf{c}} \right) 
+\left( \sum_{i=0}^n \arctan\left(\frac{|\mathbf{v}_i \times \mathbf{c}|}{\mathbf{v}_i \cdot \mathbf{c}}\right)\right)
 \end{aligned}
 $$
 
@@ -239,10 +239,10 @@ This beautiful equation gives us a $3\times 1$ vector, describing the derivative
 
 $$
 \begin{aligned}
-\mathbf{s}\_i &= \frac{1}{v^2 + w^2} \left[ \frac{w}{v} K_i \mathbf{c}^{(t)} - v \mathbf{v}\_i \right] \\\\
+\mathbf{s}_i &= \frac{1}{v^2 + w^2} \left[ \frac{w}{v} K_i \mathbf{c}^{(t)} - v \mathbf{v}_i \right] \\
 \mathbf{c}^{(t+1)} &= \mathbf{c}^{(t)} - \alpha \left(
-\frac{2}{n}\sum\_{i=1}^n \mathbf{s}\_i \ell  -
-\frac{2}{n^2}\left( \sum\_{i=0}^n \mathbf{s}\_i \right) \left( \sum\_{i=0}^n \ell\right)
+\frac{2}{n}\sum_{i=1}^n \mathbf{s}_i \ell  -
+\frac{2}{n^2}\left( \sum_{i=0}^n \mathbf{s}_i \right) \left( \sum_{i=0}^n \ell\right)
 \right)
 \end{aligned}
 $$
