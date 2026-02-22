@@ -13,6 +13,8 @@ python -m http.server
 ```
 3. Then go and visit the associated page: `http://localhost:8000/`
 
+You can read more about the design and implementation below - or read it here on my website: [Geographic Centre](https://www.archie-harrodine.com/projects/project.html?key=geographic-centre)
+
 # Introduction
 The Centre of N Points was my A-Level Computer Science coursework project, a weave of Mathematics and Computing to explore a problem that fascinated me. Given $n$ points in some space $S$, what is the point in $S$ that is equidistant from from all those points. Right now that seems vague and poorly defined, and thats because it is ! The original problem was spurred on from an issue me and my family were having: we are scattered across the UK, where would be a location to meet such that each party would have to travel an equal distance to travel to arrive at that location. Furthermore, what would be a location that would be an equal distance to travel whilst also minimizing the total distance that all parties have to travel. At the time, I was learning Djikstra's algorithm and A*; as well as learning the basics of 3D geometry and calculus. Thus, I pursued this problem for my A-Level project.<br><br>
 
@@ -257,7 +259,7 @@ We broke down the problem to use two main classes of a \`Point\` and a \`Calcula
 These classes would be used to communicate with the interface, displaying the info with a GoogleMaps inspired map. We implemented several views, including satellite and street, which gave the user a bit more customisability. The method to enter the points was simple, either using latitude/longitude or an address could be searched, and if it was found it would be used. <br> <br>
 
 We also implemented an option to instead minimize the mean distance, as opposed to the variance. This finds a more central location, but more importantly minimizes the total travel distance. This is useful if the goal is to reduce overall travel, as opposed to making it equal for all parties. We also experimented with a third option, which uses a weighted addition of both variance and mean distance, allowing the user to balance between equidistance and total distance. <br> <br>
-Here is a screenshot of the original implementation:
+Here is a screenshot of the original implementation: 
 
 ![Original implementation](./md/images/example.png)
 *Original Python implementation using PyQT5 and Google Maps API.*
